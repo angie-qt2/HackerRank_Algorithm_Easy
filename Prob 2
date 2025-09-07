@@ -1,89 +1,55 @@
-#include <bits/stdc++.h>
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
 
-using namespace std;
+class Result
+{
 
-string ltrim(const string &);
-string rtrim(const string &);
-vector<string> split(const string &);
+    /*
+     * Complete the 'simpleArraySum' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts INTEGER_ARRAY ar as parameter.
+     */
 
-int simpleArraySum(vector<int> ar) {
-    
-     int num[6] = {1, 2, 3, 4, 10, 11};
-     int sum = 0;
-     int n = 6;
-    for (int i = 0; i < n; ++i) {
-        sum += num[i];
+    public static int simpleArraySum(List<int> ar)
+    {
+        int sum = 0;
+    foreach (int num in ar)
+    {
+        sum += num;
     }
     return sum;
-     
+
+    }
+
 }
 
-int main()
+class Solution
 {
-    ofstream fout(getenv("OUTPUT_PATH"));
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
 
-    string ar_count_temp;
-    getline(cin, ar_count_temp);
+        int arCount = Convert.ToInt32(Console.ReadLine().Trim());
 
-    int ar_count = stoi(ltrim(rtrim(ar_count_temp)));
+        List<int> ar = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(arTemp => Convert.ToInt32(arTemp)).ToList();
 
-    string ar_temp_temp;
-    getline(cin, ar_temp_temp);
+        int result = Result.simpleArraySum(ar);
 
-    vector<string> ar_temp = split(rtrim(ar_temp_temp));
+        textWriter.WriteLine(result);
 
-    vector<int> ar(ar_count);
-
-    for (int i = 0; i < ar_count; i++) {
-        int ar_item = stoi(ar_temp[i]);
-
-        ar[i] = ar_item;
+        textWriter.Flush();
+        textWriter.Close();
     }
-
-    int result = simpleArraySum(ar);
-
-    fout << result << "\n";
-
-    fout.close();
-
-    return 0;
-}
-
-string ltrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        s.begin(),
-        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
-    );
-
-    return s;
-}
-
-string rtrim(const string &str) {
-    string s(str);
-
-    s.erase(
-        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
-        s.end()
-    );
-
-    return s;
-}
-
-vector<string> split(const string &str) {
-    vector<string> tokens;
-
-    string::size_type start = 0;
-    string::size_type end = 0;
-
-    while ((end = str.find(" ", start)) != string::npos) {
-        tokens.push_back(str.substr(start, end - start));
-
-        start = end + 1;
-    }
-
-    tokens.push_back(str.substr(start));
-
-    return tokens;
 }
