@@ -16,37 +16,21 @@ class Result
 {
 
     /*
-     * Complete the 'hourglassSum' function below.
+     * Complete the 'miniMaxSum' function below.
      *
-     * The function is expected to return an INTEGER.
-     * The function accepts 2D_INTEGER_ARRAY arr as parameter.
+     * The function accepts INTEGER_ARRAY arr as parameter.
      */
 
-    public static int hourglassSum(List<List<int>> arr)
+    public static void miniMaxSum(List<int> arr)
     {
-        int rows = arr.Count;
-        int cols = arr[0].Count;
+        long total = arr.Sum(x => (long)x);   
+        long min = arr.Min();
+        long max = arr.Max();
 
-        int maxSum = int.MinValue;
+        long minSum = total - max;
+        long maxSum = total - min;
 
-        for (int i = 0; i <= rows - 3; i++)
-        {
-            for (int j = 0; j <= cols - 3; j++)
-            {
-                int sum =
-                    arr[i][j] + arr[i][j + 1] + arr[i][j + 2] +
-                    arr[i + 1][j + 1] +
-                    arr[i + 2][j] + arr[i + 2][j + 1] + arr[i + 2][j + 2];
-                    
-
-                    if (sum > maxSum)
-                    {
-                        maxSum = sum;
-                    }
-            }
-        }
-
-        return maxSum;
+        Console.WriteLine(minSum + " " + maxSum);
     }
 
 }
@@ -55,20 +39,9 @@ class Solution
 {
     public static void Main(string[] args)
     {
-        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
 
-        List<List<int>> arr = new List<List<int>>();
+        List<int> arr = Console.ReadLine().TrimEnd().Split(' ').ToList().Select(arrTemp => Convert.ToInt32(arrTemp)).ToList();
 
-        for (int i = 0; i < 6; i++)
-        {
-            arr.Add(Console.ReadLine().TrimEnd().Split(' ').ToList().Select(arrTemp => Convert.ToInt32(arrTemp)).ToList());
-        }
-
-        int result = Result.hourglassSum(arr);
-
-        textWriter.WriteLine(result);
-
-        textWriter.Flush();
-        textWriter.Close();
+        Result.miniMaxSum(arr);
     }
 }
