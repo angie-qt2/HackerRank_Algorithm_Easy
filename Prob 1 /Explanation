@@ -1,0 +1,4 @@
+The first problem that HackerRank gave me is called Solve Me First.
+In this problem the function name is solveMeFirst; this function has two values, a and b.
+Based on the problem, the solution must return an integer value.
+To solve the function given, I put "return a+b;".
