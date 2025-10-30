@@ -1,0 +1,127 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Result
+{
+
+    /*
+     * Complete the 'twoPluses' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts STRING_ARRAY grid as parameter.
+     */
+
+    public static int twoPluses(List<string> grid)
+    {
+        int n = grid.Count;
+        int m = grid[0].Length;
+
+        List<(HashSet<(int, int)> cells, int area)> pluses = new List<(HashSet<(int, int)>, int)>();
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (grid[i][j] == 'G')
+                {
+                    int arm = 0;
+                    while (true)
+                    {
+                        if (i - arm < 0 || i + arm >= n || j - arm < 0 || j + arm >= m)
+                            break;
+                        if (grid[i - arm][j] != 'G' || grid[i + arm][j] != 'G' ||
+                            grid[i][j - arm] != 'G' || grid[i][j + arm] != 'G')
+                            break;
+
+                        HashSet<(int, int)> cells = new HashSet<(int, int)>
+                        {
+                            (i, j)
+                        };
+                        for (int k = 1; k <= arm; k++)
+                        {
+                            cells.Add((i - k, j));
+                            cells.Add((i + k, j));
+                            cells.Add((i, j - k));
+                            cells.Add((i, j + k));
+                        }
+
+                        int area = 4 * arm + 1;
+                        pluses.Add((cells, area));
+
+                        arm++;
+                    }
+                }
+            }
+        }
+
+        int maxProduct = 0;
+        for (int i = 0; i < pluses.Count; i++)
+        {
+            for (int j = i + 1; j < pluses.Count; j++)
+            {
+                var (cells1, area1) = pluses[i];
+                var (cells2, area2) = pluses[j];
+
+                bool overlap = false;
+                foreach (var cell in cells1)
+                {
+                    if (cells2.Contains(cell))
+                    {
+                        overlap = true;
+                        break;
+                    }
+                }
+
+                if (!overlap)
+                {
+                    int product = area1 * area2;
+                    if (product > maxProduct)
+                        maxProduct = product;
+                }
+            }
+        }
+
+        return maxProduct;
+    }
+
+}
+
+class Solution
+{
+    public static void Main(string[] args)
+    {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        string[] firstMultipleInput = Console.ReadLine().TrimEnd().Split(' ');
+
+        int n = Convert.ToInt32(firstMultipleInput[0]);
+
+        int m = Convert.ToInt32(firstMultipleInput[1]);
+
+        List<string> grid = new List<string>();
+
+        for (int i = 0; i < n; i++)
+        {
+            string gridItem = Console.ReadLine();
+            grid.Add(gridItem);
+        }
+
+        int result = Result.twoPluses(grid);
+
+        textWriter.WriteLine(result);
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
